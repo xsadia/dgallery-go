@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/xsadia/kgallery/config"
 )
 
 type Server struct {
@@ -32,8 +33,8 @@ func (s *Server) routes() {
 }
 
 func (s *Server) ListenAndServe() {
-	if err := s.HTTP.Listen(":8081"); err != nil {
-		log.Fatalf("[Error]: failed to serve on port 8080, %s\n", err.Error())
+	if err := s.HTTP.Listen(config.Ctx.Env["PORT"]); err != nil {
+		log.Fatalf("[Error]: failed to serve on port %s, %s\n", config.Ctx.Env["PORT"], err.Error())
 	}
 }
 
