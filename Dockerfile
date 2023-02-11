@@ -1,8 +1,9 @@
-from golang:1.19
+from golang:1.19 AS build
 
 WORKDIR /usr/src/app
 
-COPY go.mod go.sum ./
+COPY go.mod . 
+COPY go.sum .
 
 RUN apt-get update && apt-get install make && \
     curl -s https://packagecloud.io/install/repositories/golang-migrate/migrate/script.deb.sh | bash && \
@@ -12,6 +13,10 @@ RUN apt-get update && apt-get install make && \
 
 COPY . .
 
-RUN go build -v -o /usr/local/bin/app ./cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/app cmd/main.go
 
-CMD ["app"]
+FROM golang:1.19-alpine
+
+COPY --from=build /usr/src/app/bin/app .
+
+CMD ["./app"]
