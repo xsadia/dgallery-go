@@ -13,7 +13,7 @@ func TestConfig(t *testing.T) {
 		Init()
 
 		if Ctx.Env == nil {
-			t.Errorf("expected Ctx to be instantiated at the beginning, got nil")
+			t.Errorf("expected Ctx to be instantiated after Init is called, got nil")
 		}
 
 		for _, v := range EnvKeys {
