@@ -13,7 +13,7 @@ type Context struct {
 
 var (
 	Ctx     *Context
-	EnvKeys = [2]string{"POSTGRES_URL"}
+	EnvKeys = []string{"POSTGRES_URL"}
 )
 
 func Init() {
