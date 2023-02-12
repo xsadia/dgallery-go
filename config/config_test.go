@@ -10,7 +10,7 @@ func TestConfig(t *testing.T) {
 			t.Errorf("expected Ctx to not be instantiated at the beginning, got %v", Ctx)
 		}
 
-		Init()
+		Init("../.env.ci")
 
 		if Ctx.Env == nil {
 			t.Errorf("expected Ctx to be instantiated after Init is called, got nil")

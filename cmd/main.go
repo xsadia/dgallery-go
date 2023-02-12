@@ -7,7 +7,7 @@ import (
 
 func main() {
 	app := server.NewServer()
-	config.Init()
+	config.Init("../.env")
 
 	app.ListenAndServe()
 }

@@ -16,8 +16,8 @@ var (
 	EnvKeys = []string{"POSTGRES_URL"}
 )
 
-func Init() {
-	if err := godotenv.Load("../.env"); err != nil {
+func Init(envPath string) {
+	if err := godotenv.Load(envPath); err != nil {
 		log.Fatalf("[Error]: Error loading .env file, %v", err)
 	}
 
