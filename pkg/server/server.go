@@ -6,10 +6,12 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/xsadia/kgallery/config"
+	"github.com/xsadia/kgallery/pkg/storage"
 )
 
 type Server struct {
-	HTTP *fiber.App
+	HTTP    *fiber.App
+	Storage *storage.Storage
 }
 
 func NewServer() *Server {
