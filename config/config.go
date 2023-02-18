@@ -32,7 +32,6 @@ func Init(envPath string) {
 	Ctx = &Context{
 		Env: envMap,
 	}
-
 }
 
 func getPort() string {
