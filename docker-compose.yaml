@@ -7,6 +7,8 @@ services:
     volumes:
       - ./:/usr/src/app
     container_name: kgallery-api-go
+    env_file:
+      - .env
     ports:
       - "${PORT}:${PORT}"
     networks:
@@ -20,8 +22,8 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=kgallery
-    volumes:
-      - ./postgres:/var/lib/postgresql/data:z
+    # volumes:
+    #   - ./postgres:/var/lib/postgresql/data:z
     container_name: kgallery-db
     ports:
       - "5432:5432"

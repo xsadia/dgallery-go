@@ -1,10 +1,7 @@
 package config
 
 import (
-	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type Context struct {
@@ -13,14 +10,17 @@ type Context struct {
 
 var (
 	Ctx     *Context
-	EnvKeys = []string{"POSTGRES_URL"}
+	EnvKeys = []string{
+		"POSTGRES_URL",
+		"PGSQL_HOST",
+		"PGSQL_USER",
+		"PGSQL_PASSWORD",
+		"PGSQL_DBNAME",
+		"PGSQL_NAME",
+	}
 )
 
-func Init(envPath string) {
-	if err := godotenv.Load(envPath); err != nil {
-		log.Fatalf("[Error]: Error loading .env file, %v", err)
-	}
-
+func Init() {
 	envMap := make(map[string]string, len(EnvKeys))
 
 	for _, v := range EnvKeys {

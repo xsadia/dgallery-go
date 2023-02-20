@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	config.Init("../.env")
+	config.Init()
 	app := server.NewServer()
 	app.Storage = storage.NewStorage(config.Ctx)
 
