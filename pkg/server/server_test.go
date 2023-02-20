@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMain(m *testing.M) {
@@ -18,33 +20,25 @@ func TestMain(m *testing.M) {
 func TestRouter(t *testing.T) {
 	t.Run("returns pong", func(t *testing.T) {
 
-		expected := "pong"
+		assert := assert.New(t)
 
 		app := NewServer()
 
-		req := httptest.NewRequest("GET", "/ping", nil)
+		req := httptest.NewRequest(http.MethodGet, "/ping", nil)
 
 		resp, err := app.HTTP.Test(req, 1)
 
-		if err != nil {
-			t.Errorf("Expected error to be nil, got %s", err.Error())
-		}
+		assert.Nil(err)
 
 		var m map[string]string
 		body, err := io.ReadAll(resp.Body)
 
-		if err != nil {
-			t.Errorf("Expected error to be nil, got %s", err.Error())
-		}
+		assert.Nil(err)
 
 		json.Unmarshal(body, &m)
 
-		if resp.StatusCode != http.StatusOK {
-			t.Errorf("Expected %d, got %d", http.StatusOK, resp.StatusCode)
-		}
+		assert.Equal(resp.StatusCode, http.StatusOK)
 
-		if m["data"] != expected {
-			t.Errorf("Expected %s, got %s", expected, m["message"])
-		}
+		assert.Equal(m["data"], "pong")
 	})
 }
