@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/xsadia/kgallery/config"
+	"github.com/xsadia/kgallery/pkg/server/handlers"
 	"github.com/xsadia/kgallery/pkg/storage"
 )
 
@@ -23,6 +24,7 @@ func NewServer() *Server {
 	}
 
 	srv.routes()
+	srv.authRoutes()
 	return srv
 }
 
@@ -32,6 +34,14 @@ func (s *Server) routes() {
 			"data": "pong",
 		})
 	})
+}
+
+func (s *Server) authRoutes() {
+	handler := handlers.NewAuthHandler()
+	auth := s.HTTP.Group("/auth")
+
+	auth.Get("/discord", handler.Auth)
+	auth.Get("/discord/redirect", handler.Create)
 }
 
 func (s *Server) ListenAndServe() {

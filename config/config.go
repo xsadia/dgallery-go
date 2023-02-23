@@ -17,6 +17,8 @@ var (
 		"PGSQL_PASSWORD",
 		"PGSQL_DBNAME",
 		"PGSQL_NAME",
+		"DISCORD_CLIENT_ID",
+		"DISCORD_SECRET",
 	}
 )
 

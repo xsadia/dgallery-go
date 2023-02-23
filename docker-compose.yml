@@ -31,15 +31,17 @@ services:
       - 5432
     networks:
       - kgallery
-  # migrate:
-  #   image: migrate/migrate
-  #   networks:
-  #     - kgallery
-  #   volumes:
-  #     - .:/migrations
-  #   command: ["make migrate-up"]
-  #   links: 
-  #     - kgallerydb
+  migrate:
+    image: migrate/migrate
+    networks:
+      - kgallery
+    env_file:
+      - .env
+    volumes:
+      - ./migrations:/migrations
+    command: ["-path", "/migrations", "-database",  "postgres://${PGSQL_USER}:${PGSQL_PASSWORD}@${PGSQL_NAME}:${PGSQL_PORT}/${PGSQL_DBNAME}?sslmode=disable", "up"]
+    links: 
+      - kgallerydb
 networks:
   kgallery:
     driver: bridge
