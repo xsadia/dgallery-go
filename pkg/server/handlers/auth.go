@@ -65,5 +65,5 @@ func (a *AuthHandler) Create(c *fiber.Ctx) error {
 
 	fmt.Println(string(body))
 
-	return nil
+	return c.JSON(fiber.Map{"ok": true})
 }

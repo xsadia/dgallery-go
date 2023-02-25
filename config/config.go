@@ -19,6 +19,7 @@ var (
 		"PGSQL_NAME",
 		"DISCORD_CLIENT_ID",
 		"DISCORD_SECRET",
+		"OAUTH_REDIRECT_URL",
 	}
 )
 
