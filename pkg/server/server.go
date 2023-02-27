@@ -21,6 +21,7 @@ func NewServer() *Server {
 			CaseSensitive: true,
 			StrictRouting: true,
 		}),
+		Storage: storage.NewStorage(config.Ctx),
 	}
 
 	srv.routes()
@@ -37,7 +38,7 @@ func (s *Server) routes() {
 }
 
 func (s *Server) authRoutes() {
-	handler := handlers.NewAuthHandler()
+	handler := handlers.NewAuthHandler(s.Storage)
 	auth := s.HTTP.Group("/auth")
 
 	auth.Get("/discord", handler.Auth)
