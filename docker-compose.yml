@@ -16,15 +16,17 @@ services:
     stdin_open: true 
     tty: true
   kgallerydb:
-    image: postgres:15
     hostname: postgres
+    image: postgres:15
+    container_name: ${PGSQL_NAME}
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=kgallery
-    # volumes:
-    #   - ./postgres:/var/lib/postgresql/data:z
-    container_name: kgallery-db
+      POSTGRES_USER: ${PGSQL_USER}
+      POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
+      POSTGRES_DB: ${PGSQL_DBNAME}
+      PGDATA: /var/lib/postgresql/data
+    user: 1000:1000
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     expose:
@@ -39,8 +41,10 @@ services:
       - .env
     volumes:
       - ./migrations:/migrations
-    command: ["-path", "/migrations", "-database",  "postgres://${PGSQL_USER}:${PGSQL_PASSWORD}@${PGSQL_NAME}:${PGSQL_PORT}/${PGSQL_DBNAME}?sslmode=disable", "up"]
+    command: ["-path", "/migrations", "-database",  "postgres://${PGSQL_USER}:${PGSQL_PASSWORD}@${PGSQL_HOST}:${PGSQL_PORT}/${PGSQL_DBNAME}?sslmode=disable", "up"]
     links: 
+      - kgallerydb
+    depends_on: 
       - kgallerydb
 networks:
   kgallery:
