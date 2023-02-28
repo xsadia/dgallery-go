@@ -3,7 +3,6 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -99,8 +98,6 @@ func (a *AuthHandler) Create(c *fiber.Ctx) error {
 	json.Unmarshal(body, &um)
 
 	u := repository.NewUser(um)
-
-	fmt.Println(a.Storage)
 
 	err = u.Create(a.Storage.SQL)
 
