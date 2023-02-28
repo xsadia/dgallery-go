@@ -10,12 +10,15 @@ import (
 )
 
 func newDb(ctx *config.Context) *sql.DB {
-	url := `host=%s user=%s password=%s dbname=%s sslmode=disable`
-	connString := fmt.Sprintf(url, ctx.Env["PGSQL_HOST"],
+	url := `host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`
+	connString := fmt.Sprintf(
+		url,
+		ctx.Env["PGSQL_HOST"],
+		ctx.Env["PGSQL_PORT"],
 		ctx.Env["PGSQL_USER"],
 		ctx.Env["PGSQL_PASSWORD"],
-		ctx.Env["PGSQL_DBNAME"])
-
+		ctx.Env["PGSQL_DBNAME"],
+	)
 	db, err := sql.Open("postgres", connString)
 
 	if err != nil {

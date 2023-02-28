@@ -1,5 +1,4 @@
 ALTER TABLE users
 DROP COLUMN discord_id,
-            access_token,
-            created_at,
-            updated_at;
+DROP COLUMN created_at,
+DROP COLUMN updated_at;

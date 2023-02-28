@@ -24,14 +24,13 @@ func TestConfig(t *testing.T) {
 
 		assert.NotNil(Ctx.Env, "expected Ctx to be instantiated after Init is called, got nil")
 
-		expected := map[string]string{
-			"PGSQL_DBNAME":   "PGSQL_DBNAME",
-			"PGSQL_HOST":     "PGSQL_HOST",
-			"PGSQL_NAME":     "PGSQL_NAME",
-			"PGSQL_PASSWORD": "PGSQL_PASSWORD",
-			"PGSQL_USER":     "PGSQL_USER",
-			"PORT":           ":8081",
-			"POSTGRES_URL":   "POSTGRES_URL"}
+		expected := make(map[string]string, len(EnvKeys)+1)
+
+		expected["PORT"] = ":8081"
+
+		for _, v := range EnvKeys {
+			expected[v] = v
+		}
 
 		assert.Equal(expected, Ctx.Env)
 	})

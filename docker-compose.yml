@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  kgalleryapi:
+    build:
+      context: .
+    volumes:
+      - ./:/usr/src/app
+    container_name: kgallery-api-go
+    env_file:
+      - .env
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - kgallery
+    stdin_open: true 
+    tty: true
+  kgallerydb:
+    hostname: postgres
+    image: postgres:15
+    container_name: ${PGSQL_NAME}
+    environment:
+      POSTGRES_USER: ${PGSQL_USER}
+      POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
+      POSTGRES_DB: ${PGSQL_DBNAME}
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    healthcheck:
+      test: pg_isready -U ${PGSQL_USER} -d ${PGSQL_DBNAME}
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - kgallery
+  migrate:
+    image: migrate/migrate
+    networks:
+      - kgallery
+    env_file:
+      - .env
+    volumes:
+      - ./migrations:/migrations
+    command: ["-path", "/migrations", "-database",  "postgres://${PGSQL_USER}:${PGSQL_PASSWORD}@${PGSQL_HOST}:${PGSQL_PORT}/${PGSQL_DBNAME}?sslmode=disable", "up"]
+    links: 
+      - kgallerydb
+    depends_on:
+      kgallerydb:
+        condition: service_healthy
+networks:
+  kgallery:
+    driver: bridge
